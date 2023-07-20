@@ -1,17 +1,16 @@
 import {Injectable} from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
-import * as AWS from 'aws-sdk';
 
+import { environment } from './../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RekoginitionService {
 
-  apiKey: any = 'AIzaSyDV6xTq4KR-lWM-rT9gJcZfs_655wZJaVY';
+  apiKey: any = environment.apiKey;
 
-  private apiUrl: any = `https://vision.googleapis.com/v1/images:annotate`;
+  private apiUrl: any = environment.apiUrl;
 
   constructor(private http: HttpClient) {
   }
