@@ -12,31 +12,35 @@ export class AppComponent {
 
   imgPreview: string;
   imageSrc: string = '';
+  preview: string = ''
+  response: any = {}
 
   constructor(private rekoginition: RekoginitionService) {
     this.imgPreview = ''
   }
 
   onSelectFile(event: any) {
-    const file = event.dataTransfer ? event.dataTransfer.files[0] :  event.target.files[0];
-    const pattern  = /image-*/
+    const file = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = this._handleReaderLoaded.bind(this);
-   const resuilt =  reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
 
-   
-   
-    console.log(file,resuilt, 'imgPreview')
-    if(file) {
-// this.rekoginition.analyzeImage(this.imageSrc)
-    }
+    reader.onload = (e: any) => {
+      let reader = e.target;
+      this.preview = e.target.result;
+      this.imageSrc = reader.result;
+      const extractedString = this.extractStringAfterBase64(reader.result);
+    this.rekoginition.analyzeImage(extractedString).subscribe( (data: any) => {
+     this.response = data.responses[0]
+     console.log(this.response)
+    })
+    };
+}
+extractStringAfterBase64(dataURL: string) {
+  const commaIndex = dataURL.indexOf(",");
+  if (commaIndex !== -1) {
+    return dataURL.substring(commaIndex + 1);
   }
+  return ""; // Return an empty string if no base64 data found
+}
 
-  _handleReaderLoaded(e: any) {
-    let reader = e.target;
-   
-    this.imageSrc = reader.result;
-    this.rekoginition.analyzeImage(reader.result)
-    // console.log(this.imageSrc)
-  }
 }

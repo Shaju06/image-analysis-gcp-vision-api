@@ -1,5 +1,14 @@
-<div class="main-block__analyze">
+<div class="container" style="display: flex;">
+  <div class="main-div mt-4" style="display: flex;">
+    <div class="form-group">
+      <div class="custom-file">
+        <input class="form-control" type="file" value=""  name="sendFile" (change)="onSelectFile($event)" accept="image/*">
+      </div>
+    </div>
+    <img *ngIf="preview" [src]="preview" class="img-thumbnail" style="width: 150px; height: 150px; margin-left:10px;">
+  </div>
+  <div *ngFor="let res of response | keyvalue">
+    <pre> {{ res.key  }}: {{res.value | json}}</pre>
 
-  <input class="form-control" type="file" value="" #sendFile name="sendFile" (change)="onSelectFile($event)" accept="image/*">
-  
+  </div>
 </div>
